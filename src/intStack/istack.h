@@ -12,7 +12,19 @@
 /*******************
  * PRIVATE TYPE DECLARATION
  ********************/
+ //--------Node2-------
+struct  Node2 {
+    int data;
+    struct Node2* next;
+};
+typedef struct Node2 Node2_t;
 
+//----- LINKED LIST -----
+struct IntStack {
+   Node2_t* head;
+   Node2_t* tail;
+};
+typedef struct IntStack IntStack_t;
 
 
 
@@ -63,4 +75,4 @@ int istackPop( IntStack_t *stack );
  * PRE: ! istackIsFull( stack )
  * POST: istackTop( stack ) == item
  */
-int istackPush( IntStack_t *stack, int item);
+void istackPush( IntStack_t *stack, int item);
