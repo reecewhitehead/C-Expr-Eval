@@ -18,6 +18,7 @@
 #include "ds/queue.h"
 #include "intStack/istack.h"
 
+
 // Helper Functions
 Queue_t tokenize(char* expression);
 bool isOperand(char* t);
@@ -27,6 +28,7 @@ bool isOpenBracket(char* token);
 bool isCloseBracket(char* token);
 bool isBracket(char* token);
 int precedence(char* token);
+int math(int a , int b, char var);
 
 // Experession Evaluator Functions
 Queue_t toPostfix(Queue_t infix_tokens);
@@ -234,8 +236,62 @@ Queue_t toPostfix(Queue_t infix_tokens)
 // POST: returns the result of evaluating the post-fix expression.
 int evalExpr(Queue_t expression)
 {
+	IntStack_t stack = istackCreate();
+	int a;
+	int b;
 
-	printf("NOT IMPLEMENTED YET -- that's your job ;-)\n");
-	return -1;  // STUB
+	while(!qIsEmpty(expression)){
+		char* var = qDequeue(&expression);
+		if(isOperand(var)){
+			istackPush( &stack, operandValue(var));
+		}
+		
+		else if(isOperator(var)){
+			a = istackPop(&stack);
+			b = istackPop(&stack);
+			istackPush(&stack, math(a,b,symbol(var)));
+		}
+		
+	}
+	
+
+
+	return istackPop(&stack);  
 
 }
+
+
+
+	/* 
+	PRE: two integer values are given and a simple math opperator is handed as a
+	char
+	POST: returns the caluclated value of the two integers applid with the opperator
+	*/
+int math(int b, int a, char opp){
+	
+	
+	if( opp == '+'){
+		return a + b;
+		
+	}
+	else if( opp == '-' ){
+		return a - b;
+		
+	}
+	else if(opp == '*'){
+		return a*b;
+	}
+	else if(opp == '/'){
+		if( b == 0){
+			printf("cannot divide by zero!!!!");
+			assert(b != 0);
+		}
+		
+		return a/b;
+		
+	}
+	printf("Error, invalid opperator detected!");
+	return 0;
+}
+
+ 
